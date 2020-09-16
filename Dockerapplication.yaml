@@ -1,0 +1,33 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dockerapplicationdeployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: DockerApplication
+  template:
+    metadata:
+      labels:
+        app: Dockersampleconfig
+    spec:
+      containers:
+      - name: dockerapplicationrepos
+        image: sampleapicr.azurecr.io/dockerapplicationrepos:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: dsconfigsn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dockersapplication
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: DockerApplication
